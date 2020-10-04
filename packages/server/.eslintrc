@@ -1,0 +1,6 @@
+{
+  "extends": "../../config/eslintrc.base.json",
+  "globals": {
+    "__dirname": true,
+  },
+}

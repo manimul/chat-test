@@ -1,0 +1,17 @@
+{
+  "name": "docly-chat",
+  "contributors": [
+    "Hampus Persson, <hampus.persson@docly.com>"
+  ],
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "scripts": {
+    "dev:client": "yarn workspace @docly/chat-client run dev",
+    "dev:server": "yarn workspace @docly/chat-server run dev"
+  }
+}
+
