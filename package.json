@@ -1,7 +1,8 @@
 {
   "name": "docly-chat",
   "contributors": [
-    "Hampus Persson, <hampus.persson@docly.com>"
+    "Hampus Persson, <hampus.persson@docly.com>",
+    "Mark Niklasson Mulvaney, <markmulvaney@gmail.com>"
   ],
   "private": true,
   "workspaces": {
@@ -14,4 +15,3 @@
     "dev:server": "yarn workspace @docly/chat-server run dev"
   }
 }
-
