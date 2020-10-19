@@ -30,13 +30,6 @@ const useChat = (roomId: string): Chat => {
     };
   }, [roomId]);
 
-  //const sendMessage = (messageBody: string) => {
-  //socketRef?.current?.emit(EVENTS.NEW_CHAT_MESSAGE, {
-  //body: messageBody,
-  //senderId: socketRef.current.id,
-  // });
-  //};
-
   const sendMessage = (messageBody: any) => {
     socketRef?.current?.emit(EVENTS.NEW_CHAT_MESSAGE, {
       body: messageBody.body,
