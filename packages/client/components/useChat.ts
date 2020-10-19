@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
-import socketIOClient from 'socket.io-client';
+import { useEffect, useRef, useState } from "react";
+import socketIOClient from "socket.io-client";
 
-import { Message, Chat } from '../interfaces';
+import { Message, Chat } from "../interfaces";
 
 enum EVENTS {
-  NEW_CHAT_MESSAGE = 'NEW_CHAT_MESSAGE',
+  NEW_CHAT_MESSAGE = "NEW_CHAT_MESSAGE",
 }
-const SOCKET_SERVER_URL = 'http://localhost:4000';
+const SOCKET_SERVER_URL = "http://localhost:4000";
 
 const useChat = (roomId: string): Chat => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -30,9 +30,17 @@ const useChat = (roomId: string): Chat => {
     };
   }, [roomId]);
 
-  const sendMessage = (messageBody: string) => {
+  //const sendMessage = (messageBody: string) => {
+  //socketRef?.current?.emit(EVENTS.NEW_CHAT_MESSAGE, {
+  //body: messageBody,
+  //senderId: socketRef.current.id,
+  // });
+  //};
+
+  const sendMessage = (messageBody: any) => {
     socketRef?.current?.emit(EVENTS.NEW_CHAT_MESSAGE, {
-      body: messageBody,
+      body: messageBody.body,
+      image: messageBody.image,
       senderId: socketRef.current.id,
     });
   };
