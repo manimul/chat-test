@@ -12,5 +12,5 @@ export type Message = {
 
 export interface Chat {
   messages: Message[];
-  sendMessage: (m: object) => void;
+  sendMessage: (m: Message) => void;
 }
