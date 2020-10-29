@@ -6,10 +6,11 @@ export type User = {
 export type Message = {
   ownedByCurrentUser: boolean;
   body: string;
+  image: string;
   senderId: string;
 };
 
 export interface Chat {
   messages: Message[];
-  sendMessage: (m: string) => void;
+  sendMessage: (m: Message) => void;
 }
