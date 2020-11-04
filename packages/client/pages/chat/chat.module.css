@@ -88,6 +88,14 @@
 .message-image {
   max-width: 100%;
 }
+.edit-message-button {
+  font-size: 28px;
+  font-weight: 600;
+  color: white;
+  background: rgb(49, 88, 162);
+  padding: 24px 12px;
+  border: none;
+}
 
 .send-message-button {
   font-size: 28px;
@@ -102,4 +110,34 @@
 .new-message-input-field,
 .send-message-button {
   border-color: #9a9a9a;
+}
+
+.menu-toggle {
+  position: absolute;
+  border: none;
+  color: #ffffff;
+  right: 12px;
+  margin-top: -10px;
+  background: rgb(5, 44, 80, 0.6);
+  border-radius: 4px;
+  width: 20px;
+  height: 20px;
+}
+
+.menu-container {
+  background: rgb(5, 44, 80);
+  right: 10px;
+  position: absolute;
+  padding: 1em;
+  margin-top: 14px;
+  z-index: 100;
+}
+
+.menu-container > button {
+  background: none;
+  border: none;
+  color: #ffffff;
+  padding: 5px 20px;
+  text-decoration: underline;
+  display: block;
 }

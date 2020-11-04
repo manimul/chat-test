@@ -7,6 +7,8 @@ const io = socketIo(server);
 const PORT = 4000;
 enum EVENTS {
   NEW_CHAT_MESSAGE = 'NEW_CHAT_MESSAGE',
+  EDIT_CHAT_MESSAGE = 'EDIT_CHAT_MESSAGE',
+  DELETE_CHAT_MESSAGE = 'DELETE_CHAT_MESSAGE',
 }
 
 if (process.env.NODE_ENV === 'development') {
@@ -23,6 +25,16 @@ io.on('connection', (socket: SocketIO.Socket) => {
   // Listen for new messages
   socket.on(EVENTS.NEW_CHAT_MESSAGE, (data) => {
     io.in(roomId).emit(EVENTS.NEW_CHAT_MESSAGE, data);
+  });
+
+  // Listen for deleted messages
+  socket.on(EVENTS.DELETE_CHAT_MESSAGE, (data) => {
+    io.in(roomId).emit(EVENTS.DELETE_CHAT_MESSAGE, data);
+  });
+
+  // Listen for edited messages
+  socket.on(EVENTS.EDIT_CHAT_MESSAGE, (data) => {
+    io.in(roomId).emit(EVENTS.EDIT_CHAT_MESSAGE, data);
   });
 
   // Leave the room if the user closes the socket
