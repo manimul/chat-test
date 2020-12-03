@@ -8,9 +8,13 @@ export type Message = {
   body: string;
   image: string;
   senderId: string;
+  indexNum: number;
+  currentState: Message[];
 };
 
 export interface Chat {
   messages: Message[];
   sendMessage: (m: Message) => void;
+  editMessage: (m: Message, n: number) => void;
+  deleteMessage: (n: number) => void;
 }

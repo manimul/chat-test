@@ -1,4 +1,4 @@
-import React, { useState, ReactElement, ChangeEvent } from 'react';
+import React, { useState, ReactElement, ChangeEvent, MouseEvent } from 'react';
 import { useRouter } from 'next/router';
 import styles from './chat.module.css';
 import useChat from '../../components/useChat';
@@ -7,10 +7,16 @@ import { Message } from '../../interfaces';
 const ChatRoom = (): ReactElement => {
   const router = useRouter();
   const { id: roomId } = router.query;
-  const { messages, sendMessage } = useChat(roomId as string);
+  const { messages, sendMessage, deleteMessage, editMessage } = useChat(
+    roomId as string
+  );
   const [newMessage, setNewMessage] = useState('');
   const newMessageObj = {} as Message;
   const [newImage, setNewImage] = useState('');
+  const [editMode, setEditMode] = useState(Boolean);
+  const [editText, setEditText] = useState('');
+  const [messageIndex, setMessageIndex] = useState(Number);
+  const messagePrompt = editMode ? editText : 'Write message...';
   const imageInputRef = React.useRef<HTMLInputElement>(null);
 
   const handleNewMessageChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -26,12 +32,12 @@ const ChatRoom = (): ReactElement => {
   const handleSendMessage = () => {
     newMessageObj.body = newMessage;
     newMessageObj.image = newImage;
+
     if (newMessageObj.body != '' || newMessageObj.image != '') {
       sendMessage(newMessageObj);
     }
     clearMessages();
   };
-
   const clearMessages = () => {
     setNewMessage(((newMessageObj.body = ''), (newMessageObj.image = '')));
     removeImage();
@@ -42,6 +48,54 @@ const ChatRoom = (): ReactElement => {
     if (imageInputRef.current != null && imageInputRef.current.value != '') {
       imageInputRef.current.value = '';
     }
+  };
+
+  const editMessageToggle = (event: MouseEvent<HTMLButtonElement>) => {
+    setEditMode((editMode) => !editMode);
+    setMessageIndex(event.target.value);
+    setEditText(messages[event.target.value].body);
+  };
+
+  const handleEditMessage = () => {
+    setEditMode(!editMode);
+    newMessageObj.body = newMessage;
+    newMessageObj.image = newImage;
+
+    if (newMessageObj.body != '' || newMessageObj.image != '') {
+      editMessage(newMessageObj, messageIndex);
+    }
+
+    clearMessages();
+  };
+
+  const deleteMessages = (event: MouseEvent<HTMLButtonElement>) => {
+    deleteMessage(event.target.value);
+  };
+
+  const OptionsMenu = ({ elemIndex }): ReactElement => {
+    const [showMenu, setShowMenu] = useState(false);
+    return (
+      <>
+        <button
+          value={elemIndex}
+          className={styles['menu-toggle']}
+          onClick={() => setShowMenu(!showMenu)}
+        >
+          +
+        </button>
+
+        {showMenu && (
+          <div className={styles['menu-container']}>
+            <button value={elemIndex} onClick={editMessageToggle}>
+              Edit
+            </button>
+            <button value={elemIndex} onClick={deleteMessages}>
+              Delete
+            </button>
+          </div>
+        )}
+      </>
+    );
   };
 
   return (
@@ -63,6 +117,8 @@ const ChatRoom = (): ReactElement => {
               )}
 
               {message.body}
+
+              {message.ownedByCurrentUser && <OptionsMenu elemIndex={i} />}
             </li>
           ))}
         </ol>
@@ -70,7 +126,7 @@ const ChatRoom = (): ReactElement => {
       <textarea
         value={newMessage}
         onChange={handleNewMessageChange}
-        placeholder='Write message...'
+        placeholder={messagePrompt}
         className={styles['new-message-input-field']}
       />
       {newImage && (
@@ -96,13 +152,21 @@ const ChatRoom = (): ReactElement => {
       >
         Upload Image
       </label>
-
-      <button
-        onClick={handleSendMessage}
-        className={styles['send-message-button']}
-      >
-        Send
-      </button>
+      {editMode ? (
+        <button
+          onClick={handleEditMessage}
+          className={styles['edit-message-button']}
+        >
+          Update Message
+        </button>
+      ) : (
+        <button
+          onClick={handleSendMessage}
+          className={styles['send-message-button']}
+        >
+          Send
+        </button>
+      )}
     </div>
   );
 };
